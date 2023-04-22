@@ -5,13 +5,13 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const passportLocalMongoose = require('passport-local-mongoose');
-
+require(dotenv)
 // Initialize Express app
 const app = express();
 
 // Configure database connection
-mongoose.connect("mongodb+srv://narangrg48:OGMeNDz0HxxP92rT@clusterng0.cea6qik.mongodb.net/test", {
-  useNewUrlParser: true
+mongoose.connect(process.env.MONGODB_URL, {
+  "useNewUrlParser: true
 })
 .then(() => {
   console.log("Connected to MongoDB");
@@ -22,10 +22,12 @@ mongoose.connect("mongodb+srv://narangrg48:OGMeNDz0HxxP92rT@clusterng0.cea6qik.m
 
 // Configure middleware
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 
 app.use(session({
-  secret: 'mysecretkey',
+  secret: process.env.SECRECT_SESSION_KEY,
   resave: false,
   saveUninitialized: false,
 }));
@@ -50,7 +52,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // Define routes
 app.get('/', (req, res) => {
-  
+
 
   res.render('login');
 });
@@ -90,10 +92,10 @@ app.post('/login', passport.authenticate('local', {
 }));
 
 app.get('/logout', (req, res) => {
-  req.logout(()=>{
+  req.logout(()=> {
     res.redirect("/");
   });
- 
+
 });
 
 app.get('/secret', isLoggedIn, (req, res) => {
