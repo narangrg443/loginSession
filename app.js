@@ -5,13 +5,15 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const passportLocalMongoose = require('passport-local-mongoose');
-require(dotenv)
+require('dotenv').config();
+
 // Initialize Express app
 const app = express();
 
 // Configure database connection
 mongoose.connect(process.env.MONGODB_URL, {
-  "useNewUrlParser: true
+  useNewUrlParser: true,
+useUnifiedTopology: true
 })
 .then(() => {
   console.log("Connected to MongoDB");
@@ -26,8 +28,10 @@ app.use(express.urlencoded({
   extended: true
 }));
 
+
+
 app.use(session({
-  secret: process.env.SECRECT_SESSION_KEY,
+  secret:process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: false,
 }));
