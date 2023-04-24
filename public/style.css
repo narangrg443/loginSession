@@ -1,18 +1,152 @@
-body{
-  position:relative;
-  
-  background-color: grey;
+body {
+  background-color: #121212;
+  color: #f1f1f1;
 }
 
-.container{
-  position: relative;
-  left:50%;
-  top:50%;
-  
-  translate:transform(-50%,-50%)
+.container {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 500px;
+  margin-top: 100px;
 }
 
-.alert{
-  color:red;
+h1 {
+  color: #fff;
+}
+
+label {
+  color: #fff;
+}
+
+input[type="text"], input[type="password"], input[type="submit"] {
+  background-color: #333;
+  color: #f1f1f1;
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+a {
+  color: #fff;
+
+  text-decoration: none;
+  color: #4CAF50;
+}
+button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+
+
+  margin: 20px;
+}
+
+
+
+ul {
+
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+input[type="text"] {
+  font-size: 20px;
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid black;
+  margin-bottom: 20px;
+}
+
+button[type="submit"] {
+  padding: 10px;
+  font-size: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+form[action="/delete-secret"] button[type="submit"] {
+  background-color: #f44336;
+}
+
+form[action="/delete-secret"] button[type="submit"]:hover {
+  background-color: #c62828;
+}
+
+.area {
+  height: 100px;
+}
+
+.delete-btn {
+
+
+  width: 100px;
+  height: 50px;
+  background-color: red;
+  color: white;
+ 
+   border-radius:5px;
+
+
+
+}
+
+.show {
   
+  padding:0px;
+  width: 100%;
+  height:90px;
+  background-color: lightyellow;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  align-items: center;
+  color: black;
+  border-radius: 5px;
+  
+ 
+
+
+}
+span {
+  
+  overflow: auto;
+ text-align: center;
+  width: 75%;
+  height:90%;
+  line-height:90px;
+  background-color: green;
+  margin-left:5px;
 }

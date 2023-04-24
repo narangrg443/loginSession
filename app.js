@@ -7,10 +7,18 @@ const LocalStrategy = require('passport-local').Strategy;
 const passportLocalMongoose = require('passport-local-mongoose');
 const flash = require('connect-flash');
 
+const methodOverride = require('method-override')
+
+
 require('dotenv').config();
+
 
 // Initialize Express app
 const app = express();
+
+
+app.use(methodOverride('_method'))
+
 app.use(flash());
 app.use(express.static('public'))
 
@@ -46,7 +54,10 @@ app.use(passport.session());
 // Define User schema
 const userSchema = new mongoose.Schema({
   username: String,
-  password: String
+  password: String,
+  secret: [{
+    type: String
+  }]
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -120,11 +131,42 @@ app.get('/secret', isLoggedIn, (req, res) => {
 });
 
 
-app.get("/secrect2", isLoggedIn, (req, res)=> {
-  res.render('secrect2');
+app.post('/secret', isLoggedIn, (req, res)=> {
 
+  const secrect = req.body.secret;
+
+  User.findById(req.user._id)
+  .then((user)=> {
+    user.secret.push(secrect);
+    user.save().then(()=> {
+      res.redirect('/secret')}).catch((e)=> {
+      console.log(e)})
+  })
+  .catch((e)=> {
+    console.log(e)})
 
 })
+
+
+app.delete('/secret/:index', isLoggedIn, (req, res) => {
+  const index = req.params.index;
+  const userId = req.user._id;
+
+  User.findById(userId)
+  .then(user => {
+    user.secret.splice(index, 1);
+    return user.save();
+  })
+  .then(() => {
+    res.redirect('/secret');
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).send('Error deleting secret');
+  });
+});
+
+
 
 
 // Define custom middleware to check if user is logged in
@@ -132,9 +174,7 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login', {
-    message: 'error'
-  });
+  res.redirect('/login');
 }
 
 // Start server

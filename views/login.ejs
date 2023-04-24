@@ -2,30 +2,40 @@
 <html>
 <head>
   <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+  
   <title>Login Page</title>
-  <link rel="stylesheet" href="style.css"
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Login Page</h1>
+  <div class="container">
+    <h1>Login Page</h1>
 
-
-  <% if (message) { %>
-    <div class="alert alert-danger">
-      <h1><%= message %></h1>
+<div class="message">
+    <% if (message) {
+      %>
+      <div class="alert alert-danger">
+        <p><%= message %></p>
+      </div>
+      <%
+    } %>
+    
     </div>
-    <%
-  } %>
 
-  <form action="/login" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username" required>
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required>
-    <br>
-    <input type="submit" value="Submit">
-  </form>
+    <form action="/login" method="POST">
+      <label for="username">Username:</label>
+      <input type="text" name="username" id="username" required>
+      <br>
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" required>
+      <br>
+      <input type="submit" value="Login">
+    </form>
 
-  <a href="register">no account register </a>
+    <a href="register">no account register </a>
+
+  </div>
 </body>
 </html>
