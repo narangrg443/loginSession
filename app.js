@@ -5,15 +5,19 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const passportLocalMongoose = require('passport-local-mongoose');
+const flash = require('connect-flash');
+
 require('dotenv').config();
 
 // Initialize Express app
 const app = express();
+app.use(flash());
+app.use(express.static('public'))
 
 // Configure database connection
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
-useUnifiedTopology: true
+  useUnifiedTopology: true
 })
 .then(() => {
   console.log("Connected to MongoDB");
@@ -31,7 +35,7 @@ app.use(express.urlencoded({
 
 
 app.use(session({
-  secret:process.env.SESSION_KEY,
+  secret: process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: false,
 }));
@@ -58,7 +62,9 @@ passport.deserializeUser(User.deserializeUser());
 app.get('/', (req, res) => {
 
 
-  res.render('login');
+  res.render('login', {
+    message: "hello"
+  });
 });
 
 app.get('/register', (req, res) => {
@@ -87,12 +93,16 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login',
+    {
+      message: "username and password do not match..."
+    });
 });
 
 app.post('/login', passport.authenticate('local', {
   successRedirect: '/secret',
   failureRedirect: '/login',
+  failureFlash: true
 }));
 
 app.get('/logout', (req, res) => {
@@ -109,12 +119,22 @@ app.get('/secret', isLoggedIn, (req, res) => {
     });
 });
 
+
+app.get("/secrect2", isLoggedIn, (req, res)=> {
+  res.render('secrect2');
+
+
+})
+
+
 // Define custom middleware to check if user is logged in
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/login', {
+    message: 'error'
+  });
 }
 
 // Start server
